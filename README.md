@@ -56,7 +56,7 @@ Scripts used in paper
   `>> script_simdata`
   
   
-### Run CILDS/CIFA/LDS/deconv-LDS on simulated data
+### Run CILDS/CIFA/LDS/deconv-LDS on simulated data (note that this won't run if you haven't run script_simdata)
 
   `>> script_simdimred`
   
@@ -72,7 +72,7 @@ The two required parameters are data and RunParam, and the remaining parameters 
 
 
 ### Compute R<sup>2</sup> between estimated latent variables and ground truth latent variables in given sample simulated data
-Reproduces fig. 3d (see below image). Note that the process of data generation and dimensionality reduction takes awhile so the results from the run are provided in sim_stat just for plotting purposes. 
+Note that the process of data generation and dimensionality reduction takes awhile so the results from the run are provided in sim_stat just for plotting purposes. This step produces something like the figure below. 
 
   `>> script_simstat`  
   
