@@ -20,7 +20,7 @@ add CILDS and necessary folders to the search path of MATLAB
 
   `>> cilds_setup`
 
-If using deconvolution, add OASIS[[1]](#1) function found in oasis_matlab folder to the search path of MATLAB. For more details, look at https://github.com/zhoupc/OASIS_matlab
+If using deconvolution or 'ldsInit' for CILDS, add OASIS[[1]](#1) function found in oasis_matlab folder to the search path of MATLAB. For more details, look at https://github.com/zhoupc/OASIS_matlab. The demo does not need this. 
 
   `>> oasis_setup`
 
