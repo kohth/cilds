@@ -267,7 +267,7 @@ if returnTrain && splitTrainTest
 z= xf(:,obsDim+1:obsDim+latDim,:); % Extract low-dimensional neural trajectories
 c = xf(:,1:obsDim,:); % Extract calcium traces    
 for iTrial = 1:size(z,1)
-    TrainResult(iTrial).z = squeeze(z(iTrial,:,1:end-1)); % Note latents start at z_2
+    TrainResult(iTrial).z = squeeze(z(iTrial,:,1:end)); % Note latents start at z_2
     if RunParam.N_LATENT == 1
         TrainResult(iTrial).z =  TrainResult(iTrial).z'; % Edge case where squeezing leads to TxN_LATENT instead of N_LATENTxT 
     end
