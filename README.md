@@ -16,17 +16,20 @@ CILDS allows estimates of shared activity among neurons (i.e., the latent variab
 Getting Started
 -----------
 ### Installation 
-add CILDS and necessary folders to the search path of MATLAB
+add CILDS and necessary folders to the search path of MATLAB.
+File location: main
 
   `>> cilds_setup`
 
 If using deconvolution or 'ldsInit' for CILDS, add OASIS[[1]](#1) function found in oasis_matlab folder to the search path of MATLAB. For more details, look at https://github.com/zhoupc/OASIS_matlab. The demo does not need this. 
+File location: oasis_matlab
 
   `>> oasis_setup`
 
 Demo
 -----------
 ### Apply CILDS on CILDS model generated data in core_cilds folder
+File location: core_cilds
 
   `>> script_cildssanitychecks`
 
@@ -52,11 +55,13 @@ Additional expected outputs are included in the figures folder under the header 
 Scripts used in paper
 -----------
 ### Simulate data using simulation framework
+File location: main
 
   `>> script_simdata`
   
   
 ### Run CILDS/CIFA/LDS/deconv-LDS on simulated data (note that this won't run if you haven't run script_simdata)
+File location: main
 
   `>> script_simdimred`
   
@@ -73,6 +78,7 @@ The two required parameters are data and RunParam, and the remaining parameters 
 
 ### Compute R<sup>2</sup> between estimated latent variables and ground truth latent variables in given sample simulated data
 Note that the process of data generation and dimensionality reduction takes awhile so the results from the run are provided in sim_stat just for plotting purposes. This step produces something like the figure below. 
+File location: main
 
   `>> script_simstat`  
   
