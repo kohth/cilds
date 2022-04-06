@@ -38,14 +38,47 @@ An example of CILDS being used is
 ```matlab 
 [EstParam, Result] = cilds(data, RunParam);
 ```
-where data is a structure array of trials containing N_NEURONxTIMEPOINTS of fluorescence data. RunParam is a structure containing information about the data, necessarily specifiying N_LATENT (number of latent dimensions), TRAININD (trials used for training set), and TESTIND (trials used for testing set). There are other additional parameters which are described in the cilds.m file.
+#### *Input*:
+* data - Structure containing recorded data (fluorescence traces)
+  - Dimensions: 1 x N_TRIAL  
+  - Fields: 
+    + y (N_NEURON x T) -- neural data
+
+* RunParam - Structure containing dimension of observations (no. neurons) and dimension of latent variables, training indices and testing indices
+  - Dimensions: 1 x 1
+  - Fields:
+    + N_LATENT -- desired latent dimension
+    + TRAININD (only if splitting training and testing) -- trial indices of training data
+    + TESTIND  (only if splitting training and testing) -- trial indices of testing data
 
 Note that to use 'ldsInit' for initializing CILDS, OASIS needs to be installed.
 
 In the given demo, a few tests are given for running CILDS. For instance, running test 5 checks that without the true parameters, the posteriors approach the ground truth latent variables with enough EM iterations (given a reasonable SNR)
 
-Expected output (Takes about 30s): 
+#### *Output (Takes about 30s)*: 
+* EstParam - Structure containing estimated model parameters from maximization step
+  - Dimensions: 1 x 1
+  - Fields: 
+    + A (N_NEURON x N_LATENT),
+    + B (N_NEURON x N_NEURON),
+    + G (N_NEURON x N_NEURON) - Gamma,
+    + D (N_LATENT x N_LATENT),
+    + Q (N_NEURON x N_NEURON),
+    + R (N_NEURON x N_NEURON),
+    + P (N_NEURON x N_LATENT),
+    + b (N_NEURON x 1),
+    + mu_1 (N_NEURON x 1),
+    + cov_1 (N_NEURON x N_NEURON)
+    + h_2 (N_LATENT x 1),
+    + G_2 (N_LATENT x N_LATENT)
 
+* Result - Structure containing estimated posteriors from expectation step
+  - Dimensions - 1 x N_TRIAL
+  - Fields (If leaveoneout toggled, flProj and frProj saved (predicted fluorescence and firing rate): 
+    + z (N_LATENT x T)
+    + c (N_NEURON x T)
+
+Sample figure produced, in a manner similar to Fig. 2 of paper (also shown in this document), right panel with estimated latent variables plotted over ground truth latent variables over time: 
 <p align="left">
 <img src="figures/cilds_check5.PNG" width="400" />
 </p>
