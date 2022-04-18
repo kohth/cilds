@@ -31,7 +31,7 @@ Demo
 ### Apply CILDS on CILDS model generated data in core_cilds folder
 File location: core_cilds
 
-  `>> script_cildssanitychecks`
+  `>> script_cilds_demo`
 
 An example of CILDS being used is 
 
