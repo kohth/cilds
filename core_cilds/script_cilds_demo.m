@@ -1,4 +1,4 @@
-%% script_cildsdemo
+%% script_cilds_demo
 % Script cilds demo takes generated data from cilds model, splits
 % it into training and testing, and performs several sanity checks
 %
@@ -22,7 +22,7 @@
 %
 %% AUTHOR    : Koh Tze Hui
 %% DEVELOPED : MATLAB (R2018a)
-%% FILENAME  : script_cildsdemo.m
+%% FILENAME  : script_cilds_demo.m
 %% LAST CHECKED: 220331 (YYMMDD)
 tic
 test =5;
