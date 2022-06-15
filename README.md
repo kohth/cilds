@@ -75,8 +75,8 @@ In the given demo, a few tests are given for running CILDS. For instance, runnin
 * Result - Structure containing estimated posteriors from expectation step
   - Dimensions - 1 x N_TRIAL
   - Fields (If leaveoneout toggled, flProj and frProj saved (predicted fluorescence and firing rate): 
-    + z (N_LATENT x T)
-    + c (N_NEURON x T)
+    + z (N_LATENT x T) - latent variables
+    + c (N_NEURON x T) - calcium 
 
 Sample figure produced, in a manner similar to Fig. 2 of paper (also shown in this document), right panel with estimated latent variables plotted over ground truth latent variables over time: 
 <p align="left">
