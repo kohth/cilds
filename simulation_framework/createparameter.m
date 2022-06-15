@@ -73,12 +73,12 @@
     
 function RunParam = createparameter()
 %% Store information into a structure for output
-RunParam.N_TRIAL =100; %200 in paper
+RunParam.N_TRIAL =50; %200 in paper
 RunParam.N_REMOVE = 0;
 RunParam.N_PROJ = 94;
 RunParam.N_LATENT = 10;
-RunParam.T_GEN = 30000; %60000 in paper
-RunParam.T_MAX = 29000; %59000 in paper
+RunParam.T_GEN = 10000; %60000 in paper
+RunParam.T_MAX = 9000; %59000 in paper
 RunParam.T_STEP = 1;
 
 RunParam.PIECESIZE = 5000;

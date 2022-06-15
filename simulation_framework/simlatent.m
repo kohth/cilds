@@ -33,7 +33,7 @@ x = zeros(Param.N_LATENT,Param.N_TRIAL*Param.T_GEN/Param.N_SPLIT);
 
 switch kernel
     case 'gaussianprocess' % Gaussian process trajectory
-        for i = 1:Param.N_LATENT
+        parfor i = 1:Param.N_LATENT
             x(i,:) = gaussprocess(Param,tau(i));
             disp(i);
         end

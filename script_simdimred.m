@@ -7,10 +7,10 @@
 
 timerValue = tic;
 
-simIdx = 4; gammaIdx = 1; tauIdx = 6; %simulation regime
+simIdx = 4; gammaIdx = 1; %simulation regime
 folderName = 'sim_datasample';
-redmeth = 'cifa'; % Dimensionality reduction method
-maxIter = 1501; %EM iterations
+redmeth = 'cilds'; % Dimensionality reduction method
+maxIter = 501; % EM iterations
 
 % Load data
 FileArr=dir(strcat('./',folderName,sprintf('/sim%.03d*.mat',simIdx)));
@@ -30,7 +30,7 @@ RunParam(1:size(tauCombination,1)) = RunParam;
 gam = convertgamma(RunParam(1).GAMMA(gammaIdx),1000/RunParam(1).BIN,'toTheirs');
 InitParam.G = diag(gam*ones(RunParam(1).N_PROJ,1));
 
-for iData = 1:size(tauCombination,1)
+for iData = 1 % to do dimensionality reduction on 50ms timescale. Set - {50,100,200,1000,2000,5000}ms
     data = parload(fullfile('./',folderName,'/',fluoArr(iData).name));
     dataField = fieldnames(data);
     resultFile = strcat('./',RunParam(iData).RESULTFOLDER,'/',...

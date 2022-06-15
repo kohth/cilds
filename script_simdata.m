@@ -10,9 +10,8 @@ rng('default');
 script_simparam; % get data generation parameters
 paramFolder = "sim_parameter";
 
-%% === Start parallel pool ===
+    %% === start parallel pool ===
 % StartParPool(10);
-
 for simIdx = 4
     %% === load run parameters ===
     load(sprintf('./%s/sim%.03d_runparam.mat',paramFolder,simIdx));
@@ -55,7 +54,7 @@ for simIdx = 4
     paramFile = strcat('./',saveFolder,'/',paramHeader,'genparam.mat');
     GenParam(1:size(tauCombination,1)) = GenParam;
     
-%     for iTau =1:size(tauCombination,1) %potentially change to parfor
+% for iTau =1:size(tauCombination,1) % simulate 50ms to 5000ms timescales
     for iTau =1 % Just simulate tau = 50ms for example
         % === Selected timescale of latents ===
         tau = tauCombination(iTau,:);
@@ -133,5 +132,4 @@ for simIdx = 4
     
 end
 toc
-
 

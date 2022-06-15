@@ -78,6 +78,9 @@ function [EstParam, Result, testll,trainll,InitParam,TrainResult] = cilds(Observ
 %
 %      InitParam   - Structure containing user-defined initialization
 %                    parameters
+%                           - Default: empty
+%                           - Possible fields:
+%                               A,B,G,D,Q,R,P,b,mu_1,cov_1,h_2,G_2                  
 %
 %      initType    - String to choose initialization type
 %                        1. singleInit

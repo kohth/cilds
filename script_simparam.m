@@ -42,6 +42,15 @@ switch simIdx
     case 9 %high noise 94 neurons
         RunParam.NOISE = 15;
         load('M1_faparams.mat');
+    case 10 % medium noise 94 neurons offset 1
+        load('M1_faparams.mat');
+        faParam.d = ones(size(faParams.d));
+    case 11 % medium noise 94 neurons offset 10
+        load('M1_faparams.mat');
+        faParam.d = 10*ones(size(faParams.d));
+    case 12 % medium noise 94 neurons offset 100
+        load('M1_faparams.mat');
+        faParam.d = 100*ones(size(faParams.d));
 end
 save(sprintf('./%s/sim%.03d_runparam.mat',paramFolder,simIdx),'faParams','RunParam');
 end
