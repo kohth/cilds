@@ -1,5 +1,5 @@
 function [c, s, b, g, smin, active_set] = thresholded_oasisAR1(y, g, sn, optimize_b,...
-    optimize_g, decimate, maxIter, thresh_factor, p_noise, tau_range,b0)
+    optimize_g, decimate, maxIter, thresh_factor, p_noise, tau_range)
 %% Infer the most likely discretized spike train underlying an AR(1) fluorescence trace
 % Solves the sparse non-negative deconvolution problem
 %  min 1/2|c-y|^2  subject to s_t = c_t-g c_{t-1} >=s_min or =0
@@ -101,7 +101,7 @@ g_converged = false;
 %% optimize parameters
 tol = 1e-4;
 if ~optimize_b   %% don't optimize the baseline b
-    b = b0; %changed from b = 0;
+    b = 0;
     %% initialization
     [solution, spks, active_set] = oasisAR1(y, g, [], smin);
     
@@ -245,6 +245,7 @@ if ~exist('g_range', 'var') || isempty(g_range)
    g_range = [0, 1];  
 end
 %% find the optimal g and get the warm started active_set
+h = []; 
 g = fminbnd(@rss_g, g_range(1), g_range(2));
 yp = y;
 for m=1:len_active_set
