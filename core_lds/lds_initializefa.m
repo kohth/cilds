@@ -42,7 +42,7 @@ for iTrial = 1:N_TRIAL
     Z_fa(iTrial).zcurr = FA_result.mean(:,2:end);
     Z_fa(iTrial).zprev = FA_result.mean(:,1:end-1);
     Z_fa(iTrial).zall = FA_result.mean;
-    if NTrial == 1
+    if N_TRIAL == 1
         z_1 = FA_result.mean(:,1:20)';  % we need enough datapoints to estimate covariance, so we take the first 20 since we don't have trials
     else
         z_1(iTrial,:) = FA_result.mean(:,1)';
