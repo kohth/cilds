@@ -1,6 +1,6 @@
 CILDS (Calcium Imaging Linear Dynamical System)
 =================
-Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.biorxiv.org/content/10.1101/2022.03.11.480682v1)". Runs on MATLAB2018a.
+Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.biorxiv.org/content/10.1101/2022.03.11.480682v1)". Runs on MATLAB2018a. Note that this code is currently still in preliminary form.
 
 CILDS generative model, see methods for variable definitions and dimensions.
 <p align="left">
