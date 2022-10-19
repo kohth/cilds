@@ -54,7 +54,11 @@ fileHeader = 'ldsinit';
 %% === Get y(1) for mu_1 and cov_1 ===
 y_1 = [];
 for iTrial = 1:size(Observation,2)    
-    y_1 = [y_1 Observation(iTrial).y(:,1)]; 
+    if size(Observation,2) ==1
+        y_1 = [y_1 Observation(iTrial).y(:,1:20)]; % we need enough datapoints to estimate covariance, so we take the first 20 since we don't have trials
+    else
+        y_1 = [y_1 Observation(iTrial).y(:,1)];
+    end
 end
 
 %% === Set parameters ===
