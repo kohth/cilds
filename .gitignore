@@ -8,3 +8,12 @@
 .DS_Store
 cildsgenerateddata.mat
 *.mat
+core_fa/.DS_Store
+core_fa/._.DS_Store
+core_fa/._example.m
+core_fa/._fastfa.m
+core_fa/._indepGaussEval.m
+core_fa/._indepGaussFit.m
+core_fa/._README
+core_fa/._simdata_fa.m
+core_fa/.DS_Store
