@@ -109,7 +109,7 @@ cilds_crossvalidate(data,RunParam(iData),'zDimList',RunParam(iData).N_LATENT,...
 The example performs 2-fold cross-validation using N_LATENT number of latent dimensions, a maximum number of EM iterations as specified, saving the results in resultFile and initializing certain parameters as specified in InitParam. 
 
 
-#### *Neccessary Input*:
+#### *Necessary Input*:
 * data - Structure containing recorded data (fluorescence traces)
   - Dimensions: 1 x N_TRIAL  
   - Fields: 
