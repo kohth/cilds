@@ -1,6 +1,6 @@
 CILDS (Calcium Imaging Linear Dynamical System)
 =================
-Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.biorxiv.org/content/10.1101/2022.03.11.480682v1)". Runs on MATLAB2018a. Note that this code is currently still in preliminary form.
+Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.biorxiv.org/content/10.1101/2022.03.11.480682v1)". Runs on MATLAB2019a. Note that this code is currently still in preliminary form.
 
 CILDS generative model, see methods for variable definitions and dimensions.
 <p align="left">
@@ -21,8 +21,8 @@ File location: main
 
   `>> cilds_setup`
 
-If using deconvolution or 'ldsInit' for CILDS, add OASIS[[1]](#1) function found in oasis_matlab folder to the search path of MATLAB. For more details, look at https://github.com/zhoupc/OASIS_matlab. The demo does not need this. <br />
-File location: oasis_matlab
+If using deconvolution or 'ldsInit' for CILDS, you *must* download OASIS[[1]](#1) from https://github.com/zhoupc/OASIS_matlab. Add OASIS to the search path of MATLAB. The demo does not need this. <br />
+File location: https://github.com/zhoupc/OASIS_matlab
 
   `>> oasis_setup`
 
@@ -51,7 +51,7 @@ An example of CILDS being used is
     + TRAININD (only if splitting training and testing) -- trial indices of training data
     + TESTIND  (only if splitting training and testing) -- trial indices of testing data
 
-Note that to use 'ldsInit' for initializing CILDS, OASIS needs to be installed.
+Note that to use 'ldsInit' for initializing CILDS, OASIS must be downloaded.
 
 In the given demo, a few tests are given for running CILDS. For instance, running test 5 checks that without the true parameters, the posteriors approach the ground truth latent variables with enough EM iterations (given a reasonable SNR)
 
@@ -72,7 +72,7 @@ In the given demo, a few tests are given for running CILDS. For instance, runnin
     + h_2 (N_LATENT x 1),
     + G_2 (N_LATENT x N_LATENT)
 
-* Result - Structure containing estimated posteriors from expectation step
+* Result - Structure containing estimated posteriors (latent variables) from expectation step
   - Dimensions - 1 x N_TRIAL
   - Fields (If leaveoneout toggled, flProj and frProj saved (predicted fluorescence and firing rate): 
     + z (N_LATENT x T) - latent variables
@@ -93,7 +93,9 @@ File location: main
   `>> script_simdata`
   
   
-### Run CILDS/CIFA/LDS/deconv-LDS on simulated data (note that this won't run if you haven't run script_simdata)
+### Run CILDS/CIFA/LDS/deconv-LDS on simulated data (note that this won't run if you haven't run script_simdata and if you haven't downloaded OASIS and added it to the path)
+If you do want to run it without installing OASIS, add 'initType','randInit' to cilds_crossvalidate.
+
 File location: main
 
   `>> script_simdimred`
@@ -102,11 +104,38 @@ This performs a 2-fold cross-validation using the chosen dimensionality reductio
 ```matlab 
 cilds_crossvalidate(data,RunParam(iData),'zDimList',RunParam(iData).N_LATENT,...
                     'numFold',2,'maxIter',maxIter,'fileHeader',resultFile,...
-                    'initParam',InitParam);
+                    'InitParam',InitParam);
 ```
 The example performs 2-fold cross-validation using N_LATENT number of latent dimensions, a maximum number of EM iterations as specified, saving the results in resultFile and initializing certain parameters as specified in InitParam. 
 
-The two required parameters are data and RunParam, and the remaining parameters specified by '' are optional. data is a structure array of trials containing N_NEURONxTIMEPOINTS of fluorescence data. RunParam is a structure containing information about the data, necessarily specifiying N_LATENT (number of latent dimensions), TRAININD (trials used for training set), and TESTIND (trials used for testing set). 
+
+#### *Neccessary Input*:
+* data - Structure containing recorded data (fluorescence traces)
+  - Dimensions: 1 x N_TRIAL  
+  - Fields: 
+    + y (N_NEURON x T) -- neural data
+
+* RunParam - Structure containing dimension of observations (no. neurons) and dimension of latent variables, training indices and testing indices
+  - Dimensions: 1 x 1
+  - Fields:
+    + N_LATENT  (not necessary if 'zDimList' is specified) -- desired latent dimension
+    + TRAININD (necessary in cross-validation) -- trial indices of training data
+    + TESTIND  (necessary in cross-validation)-- trial indices of testing data
+
+#### *Optional Input (specified within '')*:
+* 'numFold' - Scalar indicating number of crossvalidation folds
+
+* 'zDimList - Scalar or vector containing latent dimensions to be used in dimensionality reduction
+
+* 'maxIter' - Scalar indicating number of expectation-maximization iterations to run (default is 500)
+
+* 'InitParam' - Structure containing user-defined initialization parameters
+   - Dimensions: 1 x 1
+   - Possible fields: A,B,G,D,Q,R,P,b,mu_1,cov_1,h_2,G_2(see above EstParam description for dimensions)
+
+* 'fileHeader' - String containing start of file name for saving (default: nan)
+
+* 'initType' - String to choose initialization type. (default (won't run if OASIS is not installed):'ldsInit'). 
 
 
 ### Compute R<sup>2</sup> between estimated latent variables and ground truth latent variables in given sample simulated data
@@ -119,6 +148,9 @@ File location: main
 <img src="figures/fig_3d.PNG" width="400" />
 </p>
   
+Computational Requirements
+-----------
+Matlab (2019a) using Intel(R) Xeon(R) CPU processors (Gold 6230, 2.1 GHz) with 250 GB of RAM. 
 
 References
 -----------

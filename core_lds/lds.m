@@ -65,6 +65,15 @@ function [EstParam, Result, testll,InitParam] = lds(Observation,RunParam,varargi
 %
 %      InitParam   - Structure containing user-defined initialization
 %                    parameters
+%                           -Dimensionality: 1x1
+%                           -Possible fields:
+%                               A (N_NEURONxN_LATENT),
+%                               D (N_LATENTxN_LATENT),
+%                               R (N_NEURONxN_NEURON),
+%                               P (N_NEURONxN_LATENT),
+%                               b (N_NEURONx1),
+%                               h_1 (N_LATENTx1),
+%                               G_1 (N_LATENTxN_LATENT)
 %
 %      initType    - String to choose initialization type
 %                        1. singleInit

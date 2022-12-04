@@ -27,11 +27,18 @@ function  cilds_crossvalidate(Observation,RunParam,varargin)
 %      numFold     - Scalar indicating number of crossvalidation folds
 %                           - Default: 2
 %
+%
+%      zDimList    - Scalar or vector containing latent dimensions to be
+%                    used in dimensionality reduction
+%                           - Default: [1:5]
+%   
 %      maxIter     - Scalar indicating maximum number of iterations for EM
 %                           - Default: 500
 %
 %      InitParam   - Structure containing user-defined initialization
 %                    parameters
+%                           - Possible fields:
+%                               A,B,G,D,Q,R,P,b,mu_1,cov_1,h_2,G_2   
 %
 %      initType    - String to choose initialization type
 %                        1. singleInit

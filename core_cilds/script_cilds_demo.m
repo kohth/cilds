@@ -23,7 +23,7 @@
 %% AUTHOR    : Koh Tze Hui
 %% DEVELOPED : MATLAB (R2018a)
 %% FILENAME  : script_cilds_demo.m
-%% LAST CHECKED: 220331 (YYMMDD)
+%% LAST CHECKED: 221203 (YYMMDD)
 tic
 test =5;
 rng(1);
@@ -177,13 +177,13 @@ switch test
         disp('test 4 complete');
     case 5
         fileHeader = '5_cildssanitycheck_first';
-        maxIter = 1;
+        maxIter = 1; % Initial latent variables
         [~, FirstResult,~,~,~,FirstTrainResult] = cilds(Observation, RunParam,...
             'InitParam',InitParam,'maxIter',maxIter,'fileHeader',...
             fileHeader,'FixParam',FixParam,...
             'splittraintest',true,'returnTrain',true,'initType','randInit');
         fileHeader = '5_cildssanitycheck_end';
-        maxIter = 100;
+        maxIter = 100; %Latent variables after 100 iterations
         [~, Result,~,~,~,TrainResult] = cilds(Observation, RunParam,...
             'InitParam',InitParam,'maxIter',maxIter,'fileHeader',...
             fileHeader,'FixParam',FixParam,...
@@ -214,13 +214,13 @@ switch test
         disp('test 5 complete');
     case 6
         fileHeader = '5_cildssanitycheck_first';
-        maxIter = 1;
+        maxIter = 1; %Initial parameters
         [FirstEstParam,FirstResult,~,~,~,FirstTrainResult] = cilds(Observation, RunParam,...
             'InitParam',InitParam,'maxIter',maxIter,'fileHeader',...
             fileHeader,'FixParam',FixParam,...
             'splittraintest',true,'returnTrain',true,'initType','randInit');
         fileHeader = '5_cildssanitycheck_end';
-        maxIter = 100;
+        maxIter = 100; %Parameters after 100 iterations
         [EstParam, Result,~,~,~,TrainResult] = cilds(Observation, RunParam,...
             'InitParam',InitParam,'maxIter',maxIter,'fileHeader',...
             fileHeader,'FixParam',FixParam,...

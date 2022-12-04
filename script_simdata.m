@@ -3,7 +3,7 @@
 %% AUTHOR    : Koh Tze Hui
 %% DEVELOPED : MATLAB (R2018a)
 %% FILENAME  : script_simdata.m
-%% LAST CHECKED: 220331 (YYMMDD)
+%% LAST CHECKED: 221203 (YYMMDD)
 
 tic
 rng('default');

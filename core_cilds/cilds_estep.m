@@ -48,7 +48,7 @@ function [Xf,Vf,Vj, ll] = cilds_estep(Param, Observation)
 %% AUTHOR    : Koh Tze Hui
 %% DEVELOPED : MATLAB (R2018a)
 %% FILENAME  : cilds_estep.m
-%% LAST CHECKED: 211030 (YYMMDD)
+%% LAST CHECKED: 221203 (YYMMDD)
 %% REFERENCES:
 %     Yu B Derivation of Kalman Filtering and Smoothing Equations
 %     Semedo J gLARA code
@@ -57,10 +57,10 @@ compll = true;
 speedup = false; %this looks for a convergence in K and J so it's an approximation
 N_NEURON = size(Param.A,1); N_LATENT = size(Param.A,2);
 
-%% === Reforming model according to start of section 2.2 ===
+%% === Reforming model according to Supplemental Information, EM algorithm for CILDS, 1 Expectation Step ===
 R = Param.R;
-L = [Param.G, Param.A;zeros(N_LATENT,N_NEURON),Param.D];
-m = [Param.b;zeros(N_LATENT,1)];
+L = [Param.G, Param.A;zeros(N_LATENT,N_NEURON),Param.D]; % Lambda
+m = [Param.b;zeros(N_LATENT,1)]; 
 S = [Param.Q, zeros(N_NEURON,N_LATENT);zeros(N_LATENT,N_NEURON),Param.P];
 nu_1 = [Param.mu_1; Param.h_2];
 sig_1 = [Param.cov_1, zeros(N_NEURON,N_LATENT);zeros(N_LATENT,N_NEURON),Param.G_2];
@@ -122,17 +122,17 @@ for t = 1+1:T
     if speedup && t > 2 && sum(sum((squeeze(K(:,:,t-1))-squeeze(K(:,:,t-2))<1e-15)))==size(K,1)*size(K,2)
         K(:,:,t) = K(:,:,t-1);
     else
-        K(:,:,t)    = Vp(:,:,t)*Phi'/(R+Phi*Vp(:,:,t)*Phi');
-        invVy = invR*(eye(N_NEURON) - Phi*K(:,:,t));
+        K(:,:,t)    = Vp(:,:,t)*Phi'/(R+Phi*Vp(:,:,t)*Phi'); %Eqn 3 in 1.1
+        invVy = invR*(eye(N_NEURON) - Phi*K(:,:,t)); 
         invVy = (invVy + invVy')/2;
     end
-    Xc(:,:,t)   = Xp(:,:,t) + y_diff*K(:,:,t)';
-    Vc(:,:,t)   = (eye(N_LATENT+N_NEURON) - K(:,:,t)*Phi)*Vp(:,:,t);
+    Xc(:,:,t)   = Xp(:,:,t) + y_diff*K(:,:,t)'; %Eqn 4 in 1.1
+    Vc(:,:,t)   = (eye(N_LATENT+N_NEURON) - K(:,:,t)*Phi)*Vp(:,:,t); %Eqn 5 in 1.1
     Vc(:,:,t)   = (Vc(:,:,t) + Vc(:,:,t)')/2;
     
     if t < T
-        Xp(:,:,t+1) = Xc(:,:,t)*L'+[repmat(m',[NTrial,1])];
-        Vp(:,:,t+1) = L*Vc(:,:,t)*L'+S;
+        Xp(:,:,t+1) = Xc(:,:,t)*L'+[repmat(m',[NTrial,1])]; %Eqn 1 in 1.1
+        Vp(:,:,t+1) = L*Vc(:,:,t)*L'+S; %Eqn 2 in 1.1
         Vp(:,:,t+1) = (Vp(:,:,t+1) + Vp(:,:,t+1)')/2;
     end
     if compll
@@ -150,14 +150,14 @@ for t = 1:T-1
     if speedup && t>3 && sum(sum(abs(squeeze(J(:,:,t-1))-squeeze(J(:,:,t-2)))<1e-14))==size(J,1)*size(J,2)
         J(:,:,t) = J(:,:,t-1);
     else
-        J(:,:,t) = Vc(:,:,t)*L'/(Vp(:,:,t+1));
+        J(:,:,t) = Vc(:,:,t)*L'/(Vp(:,:,t+1)); % Eqn 1 in 1.2
     end
 end
 for t = (T-1):-1:1
-    Xf(:,:,t) = Xc(:,:,t) + (Xf(:,:,t+1)-Xc(:,:,t)*L'-[repmat(m',[NTrial,1])])*J(:,:,t)';
-    Vf(:,:,t) = Vc(:,:,t) + J(:,:,t)*(Vf(:,:,t+1) - Vp(:,:,t+1))*J(:,:,t)';
-    Vf(:,:,t) = (Vf(:,:,t) + Vf(:,:,t)')/2;
-    Vj(:,:,t+1) = Vf(:,:,t+1)*J(:,:,t)'; % V_(t,t-1)^T
+    Xf(:,:,t) = Xc(:,:,t) + (Xf(:,:,t+1)-Xc(:,:,t)*L'-[repmat(m',[NTrial,1])])*J(:,:,t)'; % Eqn 2 in 1.2
+    Vf(:,:,t) = Vc(:,:,t) + J(:,:,t)*(Vf(:,:,t+1) - Vp(:,:,t+1))*J(:,:,t)'; % Eqn 3 in 1.2
+    Vf(:,:,t) = (Vf(:,:,t) + Vf(:,:,t)')/2; 
+    Vj(:,:,t+1) = Vf(:,:,t+1)*J(:,:,t)'; % V_(t,t-1)^T, Eqn 4 in 1.2
 end
 ll = mean(ll);
 end

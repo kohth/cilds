@@ -1,6 +1,7 @@
 function [EstParam,nextChangeParam] = cilds_mstep(Xf,Vf,Vj,PrevParam,Observation,FixParam,changeParam)
 % Perform maximization step of EM algorithm
-% Refer to section 2.1 of supplemental methods for CILDS EM
+% Refer to section 2 of Supplemental Information under EM algorithm for
+% CILDS
 %
 % INPUT:
 %
@@ -63,7 +64,7 @@ function [EstParam,nextChangeParam] = cilds_mstep(Xf,Vf,Vj,PrevParam,Observation
 %% AUTHOR    : Koh Tze Hui
 %% DEVELOPED : MATLAB (R2018a)
 %% FILENAME  : cilds_mstep.m
-%% LAST CHECKED: 211030 (YYMMDD)
+%% LAST CHECKED: 220312 (YYMMDD)
 %% REFERENCES:
 %     Ghahramani Z Parameter Estimation for Linear Dynamical Systems
 
@@ -97,21 +98,21 @@ end
 %% Summations
 
 for t = T(1):-1:1
-    sumcc =sumcc + cV(:,:,t) + cfut(:,:,t)'*cfut(:,:,t)/N_TRIAL;
-    sumyc = sumyc + y(:,:,t)'*cfut(:,:,t)/N_TRIAL;
-    sumyy = sumyy + y(:,:,t)'*y(:,:,t)/N_TRIAL;
+    sumcc =sumcc + cV(:,:,t) + cfut(:,:,t)'*cfut(:,:,t)/N_TRIAL; %sum(E[c_t, c_t])
+    sumyc = sumyc + y(:,:,t)'*cfut(:,:,t)/N_TRIAL; %sum(E[y_t, c_t])
+    sumyy = sumyy + y(:,:,t)'*y(:,:,t)/N_TRIAL; %sum(E[y_t, y_t])
     sumz1z1 = sumz1z1+ zV(:,:,t) + z1fut(:,:,t)'*z1fut(:,:,t)/N_TRIAL;
     if t > 1
-        sumcc_1 = sumcc_1 + cc_1(:,:,t) + cfut(:,:,t)'*cfut(:,:,t-1)/N_TRIAL;
-        sumzc_1 = sumzc_1 + cz1(:,:,t-1)' + z1fut(:,:,t-1)'*cfut(:,:,t-1)/N_TRIAL;
-        sumcz = sumcz + cz(:,:,t) + cfut(:,:,t)'*z1fut(:,:,t-1)/N_TRIAL;
-        sumz1z = sumz1z  +z1z(:,:,t) + z1fut(:,:,t)'*z1fut(:,:,t-1)/N_TRIAL;
+        sumcc_1 = sumcc_1 + cc_1(:,:,t) + cfut(:,:,t)'*cfut(:,:,t-1)/N_TRIAL; %sum(E[c_t, c_{t-1}])
+        sumzc_1 = sumzc_1 + cz1(:,:,t-1)' + z1fut(:,:,t-1)'*cfut(:,:,t-1)/N_TRIAL; %sum(E[z_t, c_{t-1}])
+        sumcz = sumcz + cz(:,:,t) + cfut(:,:,t)'*z1fut(:,:,t-1)/N_TRIAL; %sum(E[c_t, z_t])
+        sumz1z = sumz1z  +z1z(:,:,t) + z1fut(:,:,t)'*z1fut(:,:,t-1)/N_TRIAL; %sum(E[z_{t-1}, z_t])
     end
 end
 
-sumc_1c_1 = sumcc - cV(:,:,T) - cfut(:,:,T)'*cfut(:,:,T)/N_TRIAL;
-sumzz = sumz1z1 - zV(:,:,T) - z1fut(:,:,T)'*z1fut(:,:,T)/N_TRIAL;
-sumz1z1 = sumz1z1 - zV(:,:,1) - z1fut(:,:,1)'*z1fut(:,:,1)/N_TRIAL;
+sumc_1c_1 = sumcc - cV(:,:,T) - cfut(:,:,T)'*cfut(:,:,T)/N_TRIAL; %sum(E[c_{t-1}, c_{t-1}])
+sumzz = sumz1z1 - zV(:,:,T) - z1fut(:,:,T)'*z1fut(:,:,T)/N_TRIAL; %sum(E[z_t, z_t])
+sumz1z1 = sumz1z1 - zV(:,:,1) - z1fut(:,:,1)'*z1fut(:,:,1)/N_TRIAL; %sum(E[z_{t-1}, z_{t-1}])
 
 sumc_1c_1 = 0.5*(sumc_1c_1+sumc_1c_1');
 sumzz = 0.5*(sumzz+sumzz');
@@ -119,23 +120,24 @@ sumz1z1 =0.5*(sumz1z1+sumz1z1');
 sumcc = 0.5*(sumcc+sumcc');
 
 
-sumc = sum(sum(cfut,1)/N_TRIAL,3)';
-sumc_1 = sum(sum(cfut(:,:,1:end-1),1)/N_TRIAL,3)';
-sumz = sum(sum(z1fut(:,:,1:end-1),1)/N_TRIAL,3)';
-sumz1 = sum(sum(z1fut(:,:,2:end),1)/N_TRIAL,3)';
-sumy = sum(sum(y,1)/N_TRIAL,3)';
+sumc = sum(sum(cfut,1)/N_TRIAL,3)'; % sum(E[c_t])
+sumc_1 = sum(sum(cfut(:,:,1:end-1),1)/N_TRIAL,3)'; % sum(E[c_{t-1}])
+sumz = sum(sum(z1fut(:,:,1:end-1),1)/N_TRIAL,3)'; % sum(E[z_t])
+sumz1 = sum(sum(z1fut(:,:,2:end),1)/N_TRIAL,3)'; %sum(E[z_{t-1}])
+sumy = sum(sum(y,1)/N_TRIAL,3)'; %sum(E[y_t])
+
 %% B, R
 
-if isfield(FixParam,'B')
+if isfield(FixParam,'B') %If not changing the values of B
     B = FixParam.B;
 else
-    B = PrevParam.B;
+    B = PrevParam.B; % else set B at whatever value it was in the previous iteration
 end
 
 
 if ~isfield(FixParam,'B')
     if strcmp(changeParam,'BGD')
-        B = diag(diag(sumyc))/(diag(diag(sumcc)));
+        B = diag(diag(sumyc))/(diag(diag(sumcc))); % Eqn 1 of section 2
     end
 end
 
@@ -143,7 +145,7 @@ EstParam.B = B;
 
 if ~isfield(FixParam,'R')
     R = (1/T)*(diag(diag(sumyy))-2*diag(diag(B*sumyc'))...
-        +diag(diag(B*sumcc*B')));
+        +diag(diag(B*sumcc*B'))); % Eqn 2 of section 2
 else
     R = FixParam.R;
 end
@@ -172,19 +174,19 @@ end
 
 if ~isfield(FixParam,'G')
     if strcmp(changeParam,'BGD')
-        G = (diag(diag(sumcc_1)) - diag(diag(A*sumzc_1)) - diag(diag(b*sumc_1')))/(diag(diag(sumc_1c_1)));
+        G = (diag(diag(sumcc_1)) - diag(diag(A*sumzc_1)) - diag(diag(b*sumc_1')))/(diag(diag(sumc_1c_1))); %Eqn 3 of section 2
     end
 end
 
 if ~isfield(FixParam,'A')
     if strcmp(changeParam,'A')
-        A = (sumcz - G*sumzc_1' - b*sumz')/(sumzz);
+        A = (sumcz - G*sumzc_1' - b*sumz')/(sumzz); %Eqn 4 of section 2
     end
 end
 
 if ~isfield(FixParam,'b')
     if strcmp(changeParam,'b')
-        b = (1/(T-1))*(sumc -(sum(cfut(:,:,1),1)/N_TRIAL)' - G*sumc_1 - A*sumz);
+        b = (1/(T-1))*(sumc -(sum(cfut(:,:,1),1)/N_TRIAL)' - G*sumc_1 - A*sumz); %Eqn 5 of section 2
     end
 end
 
@@ -196,7 +198,7 @@ if ~isfield(FixParam,'Q')
     Q = (1/(T-1))*(diag(diag(sumcc - cV(:,:,1) - cfut(:,:,1)'*cfut(:,:,1)/N_TRIAL))-2*diag(diag(G*sumcc_1'))...
         -2*diag(diag(A*sumcz'))-2*diag(diag(b*(sumc-(sum(cfut(:,:,1),1)/N_TRIAL)')'))+2*diag(diag(A*sumzc_1*G'))...
         +diag(diag(G*sumc_1c_1*G'))+2*diag(diag(b*sumc_1'*G'))+diag(diag(A*sumzz*A'))...
-        +2*diag(diag(b*sumz'*A'))+(T-1)*diag(diag(b*b')));
+        +2*diag(diag(b*sumz'*A'))+(T-1)*diag(diag(b*b'))); % Eqn 6 of section 2
 else
     Q = FixParam.Q;
 end
@@ -211,7 +213,7 @@ end
 
 if ~isfield(FixParam,'D')
     if strcmp(changeParam,'BGD')
-        D = diag(diag(sumz1z))/(diag(diag(sumzz)));
+        D = diag(diag(sumz1z))/(diag(diag(sumzz))); %Eqn 7 of section 2
     end
 end
 
@@ -219,7 +221,7 @@ EstParam.D = D;
 
 if ~isfield(FixParam,'P')
     P = (1/(T-1))*(diag(diag(sumz1z1))-2*diag(diag(D*sumz1z'))...
-        +diag(diag(D*sumzz*D')));
+        +diag(diag(D*sumzz*D'))); %Eqn 8 of section 2
 else
     P = FixParam.P;
 end
@@ -228,13 +230,13 @@ EstParam.P = P;
 %% mu_1, cov_1
 if ~isfield(FixParam,'mu_1')
     mu_1 = (sum(cfut(:,:,1),1))';
-    mu_1 = mu_1/N_TRIAL;
+    mu_1 = mu_1/N_TRIAL; %Eqn 9 of section 2
 else
     mu_1 = FixParam.mu_1;
 end
 
 if ~isfield(FixParam,'cov_1')
-    cov_1 = diag(diag(cV(:,:,1))) + diag(diag((cfut(:,:,1)-repmat(mu_1,1,N_TRIAL)')'*(cfut(:,:,1)-repmat(mu_1,1,N_TRIAL)')))/N_TRIAL;
+    cov_1 = diag(diag(cV(:,:,1))) + diag(diag((cfut(:,:,1)-repmat(mu_1,1,N_TRIAL)')'*(cfut(:,:,1)-repmat(mu_1,1,N_TRIAL)')))/N_TRIAL; %Eqn 10 of section 2
 else
     cov_1 = FixParam.cov_1;
 end
@@ -245,13 +247,13 @@ EstParam.mu_1 = mu_1;
 
 if ~isfield(FixParam,'h_2')
     h_2 = (sum(z1fut(:,:,1),1))';
-    h_2 = h_2/N_TRIAL;
+    h_2 = h_2/N_TRIAL; % Eqn 11 of section 2
 else
     h_2 = FixParam.h_2;
 end
 
 if ~isfield(FixParam,'G_2')
-    G_2 = diag(diag(zV(:,:,1))) + diag(diag((z1fut(:,:,1)-repmat(h_2,1,N_TRIAL)')'*(z1fut(:,:,1)-repmat(h_2,1,N_TRIAL)')))/N_TRIAL;
+    G_2 = diag(diag(zV(:,:,1))) + diag(diag((z1fut(:,:,1)-repmat(h_2,1,N_TRIAL)')'*(z1fut(:,:,1)-repmat(h_2,1,N_TRIAL)')))/N_TRIAL; %Eqn 12 of section 2
 else
     G_2 = FixParam.G_2;
 end
@@ -259,7 +261,8 @@ G_2 = 0.5*(G_2+G_2');
 EstParam.G_2 = G_2;
 EstParam.h_2 = h_2;
 
-
+% We do a partial M step because we cannot optimize all the parameters in
+% the same iteration
 if strcmp(changeParam,'BGD')
     nextChangeParam = 'A';
 elseif strcmp(changeParam,'A')

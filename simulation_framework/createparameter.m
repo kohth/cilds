@@ -73,16 +73,16 @@
     
 function RunParam = createparameter()
 %% Store information into a structure for output
-RunParam.N_TRIAL =50; %200 in paper
+RunParam.N_TRIAL =20; %200 in paper
 RunParam.N_REMOVE = 0;
 RunParam.N_PROJ = 94;
 RunParam.N_LATENT = 10;
-RunParam.T_GEN = 10000; %60000 in paper
-RunParam.T_MAX = 9000; %59000 in paper
+RunParam.T_GEN = 5000; %60000 in paper
+RunParam.T_MAX = 4000; %59000 in paper
 RunParam.T_STEP = 1;
 
-RunParam.PIECESIZE = 5000;
-RunParam.HISTORY = 5000;
+RunParam.PIECESIZE = 1000;
+RunParam.HISTORY = 1000;
 RunParam.BIN = 25;
 RunParam.N_SPLIT = 2;
 T = RunParam.T_GEN*RunParam.N_TRIAL/RunParam.N_SPLIT;

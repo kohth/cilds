@@ -56,7 +56,7 @@ function [EstParam, Result, testll,trainll,InitParam,TrainResult] = cilds(Observ
 %                     expectation step
 %                           -Dimensions: 1 x N_TRIAL
 %                           -Fields:
-%                               z, c. If leaveoneout toggled, flProj and frProj saved
+%                               z (latent variables), c (calcium). If leaveoneout toggled, flProj and frProj saved
 %                               (predicted fluorescence and firing rate)
 %
 %      testll       - Vector containing values of log-likelihood for test
@@ -85,7 +85,7 @@ function [EstParam, Result, testll,trainll,InitParam,TrainResult] = cilds(Observ
 %      initType    - String to choose initialization type
 %                        1. singleInit
 %                           1 random draw for all parameters
-%                        2. randInit
+%                        2. randInit (default)
 %                           50 random draws for all parameters
 %                        3. ldsInit
 %                           Use deconv-LDS to provide an initialization 
@@ -171,7 +171,7 @@ if isnan(fileHeader)
     currDate = datestr(now,formatOut);
     fileHeader = strcat(currDate,'_cilds');
 end
-% Initialize
+% Initializing of 
 if ~exist(strcat(fileHeader,'_partial.mat'),'file') % Initialization needed only if starting a new fit
     switch initType
         case 'singleInit'
@@ -316,7 +316,7 @@ if leaveOneOut
 end
 
 if ~splitTrainTest
-    save(strcat(fileHeader,'_train.mat'),'Result','EstParam','ll','InitParam','-v7.3');
+    save(strcat(fileHeader,'_train.mat'),'Result','EstParam','ll','InitParam','-v7.3'); 
 end
 
 end

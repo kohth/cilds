@@ -1,3 +1,10 @@
-
+._.DS_Store
+._example.m
+._fastfa.m
+._indepGaussEval.m
+._indepGaussFit.m
+._README
+._simdata_fa.m
+.DS_Store
 cildsgenerateddata.mat
 *.mat
