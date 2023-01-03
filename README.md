@@ -1,6 +1,6 @@
 CILDS (Calcium Imaging Linear Dynamical System)
 =================
-Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.biorxiv.org/content/10.1101/2022.03.11.480682v1)". Runs on MATLAB2019a. Note that this code is currently still in preliminary form.
+Code accompanying the paper "[Dimensionality reduction of calcium-imaged neuronal population activity](https://www.nature.com/articles/s43588-022-00390-2)"[[1]](#1). Runs on MATLAB2019a. Note that this code is currently still in preliminary form.
 
 CILDS generative model, see methods for variable definitions and dimensions.
 <p align="left">
@@ -21,7 +21,7 @@ File location: main
 
   `>> cilds_setup`
 
-If using deconvolution or 'ldsInit' for CILDS, you *must* download OASIS[[1]](#1) from https://github.com/zhoupc/OASIS_matlab. Add OASIS to the search path of MATLAB. The demo does not need this. <br />
+If using deconvolution or 'ldsInit' for CILDS, you *must* download OASIS[[2]](#2) from https://github.com/zhoupc/OASIS_matlab. Add OASIS to the search path of MATLAB. The demo does not need this. <br />
 File location: https://github.com/zhoupc/OASIS_matlab
 
   `>> oasis_setup`
@@ -155,6 +155,9 @@ Matlab (2019a) using Intel(R) Xeon(R) CPU processors (Gold 6230, 2.1 GHz) with 2
 References
 -----------
 <a id="1">[1]</a> 
+Koh, T.H., Bishop, W.E., Kawashima, T. et al. Dimensionality reduction of calcium-imaged neuronal population activity. Nat Comput Sci (2022). https://doi.org/10.1038/s43588-022-00390-2
+
+<a id="2">[2]</a> 
 Vogelstein, J. T. et al. Fast nonnegative deconvolution for spike train inference from population calcium imaging.
 J. Neurophysiol. 104, 3691–3704, 10.1152/jn.01073.2009 (2010). PMID: 20554834, https://doi.org/10.1152/jn.01073.2009.
 
