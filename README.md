@@ -148,14 +148,14 @@ File location: main
 <img src="figures/fig_3d.PNG" width="400" />
 </p>
   
-Computational Requirements
+Hardware used
 -----------
 Matlab (2019a) using Intel(R) Xeon(R) CPU processors (Gold 6230, 2.1 GHz) with 250 GB of RAM. 
 
 References
 -----------
 <a id="1">[1]</a> 
-Koh, T.H., Bishop, W.E., Kawashima, T. et al. Dimensionality reduction of calcium-imaged neuronal population activity. Nat Comput Sci (2022). https://doi.org/10.1038/s43588-022-00390-2
+Koh, T.H., Bishop, W.E., Kawashima, T. *et al*. Dimensionality reduction of calcium-imaged neuronal population activity. *Nat Comput Sci* **3**, 71–85 (2023). https://doi.org/10.1038/s43588-022-00390-2
 
 <a id="2">[2]</a> 
 Vogelstein, J. T. et al. Fast nonnegative deconvolution for spike train inference from population calcium imaging.
